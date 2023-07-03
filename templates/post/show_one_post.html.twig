@@ -22,9 +22,9 @@
             <div class="comment">
                 <h4>{{ comment.owner.username }}</h4>
                 <p>{{ comment.content }}</p>
-                {% if (comment.owner == app.user and different.d < 1) or is_granted('ROLE_ADMIN') %}
+                {% if (comment.owner == app.user and different.d < 1 and not is_granted('ROLE_BANNED')) or is_granted('ROLE_ADMIN') %}
                     <a href="{{ path('delete_comment', {'comment_id': comment.id}) }}">Удалить</a>
-                        {%  if (comment.owner == app.user and different.i < 5) %}
+                        {%  if (comment.owner == app.user and different.i < 5 and not is_granted('ROLE_BANNED')) %}
                             <a href="{{ path('edit_comment', {'comment_id': comment.id}) }}">Редактировать</a>
                         {% endif %}
                 {% endif %}
