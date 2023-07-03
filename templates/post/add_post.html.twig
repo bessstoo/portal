@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+{% form_theme form 'bootstrap_5_layout.html.twig' %}
+{% block title %}Добавить пост{% endblock %}
+
+{% block body %}
+    <h1>Тут добавляются посты :)</h1>
+    {{ form_start(form) }}
+
+    {{ form_row(form.Title,{
+        label: 'Заголовок'
+    }) }}
+    {{ form_row(form.Content, {
+        label: 'Содержание'
+    }) }}
+    <button type="submit" class="btn btn-lg btn-primary">Опубликовать</button>
+    {{ form_end(form) }}
+{% endblock %}

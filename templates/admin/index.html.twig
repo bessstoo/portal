@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Admin{% endblock %}
+
+{% block body %}
+    <h1 class="homepage">Админская панель управления</h1>
+    <h2 class="homepage">Все пользователи</h2>
+    <div class="grid_users">
+        {% for user in users %}
+            {% if user.getRoles[0] != 'ROLE_ADMIN' %}
+                <div class="grid_item_user">
+                    <h4> {{ user.username }}</h4>
+                    <a href="{{ path('admin_ban', {'user_id': user.id }) }}" class="delete-button">Заблокировать</a>
+                    {% if user.getRoles[0] == 'ROLE_BANNED' %}
+                        <a href="{{ path('admin_unban', {'user_id': user.id}) }}" class="edit-button">Разблокироваь</a>
+                    {% endif %}
+                </div>
+            {% endif %}
+        {% endfor%}
+    </div>
+{% endblock %}

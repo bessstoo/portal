@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Главная{% endblock %}
+
+{% block body %}
+<h1 class="homepage">Главная страница</h1>
+    <h2 class="homepage">Активные пользователи</h2>
+    <div class="grid_users">
+            {% for user in users %}
+                {% if user.getRoles[0] == 'ROLE_USER' or user.getRoles[0] == 'ROLE_ADMIN'%}
+                <div class="grid_item_user">
+                    <h4><a href="{{ path('show_user_posts', {'user_id': user.id }) }}" class="text_black"> {{ user.username }}</a></h4>
+                </div>
+                {%endif %}
+            {% endfor%}
+    </div>
+{% endblock %}

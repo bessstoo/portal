@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+{% form_theme comment_form 'bootstrap_5_layout.html.twig' %}
+{% block title %}Посты{% endblock %}
+
+{% block body %}
+    {% if post.isDeletedAt == null %}
+        <div class="grid_one">
+            <h1>{{ post.heading }}</h1>
+            <div class="grid_one_item">
+                <p>{{ post.content}}</p>
+            </div>
+        </div>
+    {% else %}
+    <h1>Пост удален :(</h1>
+    {% endif %}
+    <h2>Комментарии</h2>
+    {% set currentDateTime = "now"|date %}
+    {% for comment in comments %}
+        {% set commentDateTime = comment.getCreationDate|date %}
+        {% set different = (date_time|date_modify('+3 hours')).diff(comment.getCreationDate) %}
+        {% if comment.isDeletedAt == null %}
+            <div class="comment">
+                <h4>{{ comment.owner.username }}</h4>
+                <p>{{ comment.content }}</p>
+                {% if (comment.owner == app.user and different.d < 1) or is_granted('ROLE_ADMIN') %}
+                    <a href="{{ path('delete_comment', {'comment_id': comment.id}) }}">Удалить</a>
+                        {%  if (comment.owner == app.user and different.i < 5) %}
+                            <a href="{{ path('edit_comment', {'comment_id': comment.id}) }}">Редактировать</a>
+                        {% endif %}
+                {% endif %}
+            </div>
+        {% endif %}
+    {% endfor %}
+    {% if is_granted('IS_AUTHENTICATED_FULLY') and not is_granted('ROLE_BANNED') %}
+    {{ form_start(comment_form) }}
+        {{ form_row(comment_form.content, {
+            label: 'Коментарий'
+        }) }}
+        <button type="submit" class="btn btn-lg btn-primary">Оставить комментарий</button>
+    {{ form_end(comment_form) }}
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+{% form_theme EditForm 'bootstrap_5_layout.html.twig' %}
+{% block title %}Hello PostController!{% endblock %}
+
+{% block body %}
+    <h1>Редактирование поста</h1>
+    {{ form_start(EditForm) }}
+
+    {{ form_row(EditForm.heading,{
+        label: 'Заголовок'
+    }) }}
+    {{ form_row(EditForm.content, {
+        label: 'Содержание'
+    }) }}
+    <button type="submit"  class="btn btn-lg btn-primary">Опубликовать</button>
+    {{ form_end(EditForm) }}
+{% endblock %}

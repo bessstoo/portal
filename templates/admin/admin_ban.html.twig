@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+{% form_theme ban_form 'bootstrap_5_layout.html.twig' %}
+{% block title %}Hello PostController!{% endblock %}
+
+{% block body %}
+    <h1>Забанить пользователя {{ user.username }}</h1>
+    <div class="ban_form">
+        {{ form_start(ban_form) }}
+
+        {{ form_row(ban_form.bannedUntil,{
+            label: 'Забанить до:'
+        }) }}
+    </div>
+    <button type="submit" class="btn btn-lg btn-primary">Забанить</button>
+    {{ form_end(ban_form) }}
+{% endblock %}
