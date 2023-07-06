@@ -18,11 +18,10 @@ use Symfony\Component\Uid\Uuid;
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
-
-
+    #[ORM\Column(type: UuidType::NAME, unique: true)]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\CustomIdGenerator(class: 'doctrine.uuid_generator')]
+    private $id;
 
     #[ORM\Column(length: 180, unique: true)]
     private ?string $username = null;
@@ -39,11 +38,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?bool $is_active = null;
 
-    #[ORM\OneToMany(mappedBy: 'owner', targetEntity: Post::class)]
-    private Collection $posts;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $bannedUntil = null;
+
+    #[ORM\OneToMany(mappedBy: 'owner', targetEntity: Post::class)]
+    private Collection $posts;
 
     public function __construct()
     {
@@ -51,10 +51,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
 
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
 
     public function getUsername(): ?string
     {
@@ -133,6 +129,25 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+
+
+    public function getBannedUntil(): ?\DateTimeInterface
+    {
+        return $this->bannedUntil;
+    }
+
+    public function setBannedUntil(?\DateTimeInterface $bannedUntil): static
+    {
+        $this->bannedUntil = $bannedUntil;
+
+        return $this;
+    }
+
+    public function getId(): ?Uuid
+    {
+        return $this->id;
+    }
+
     /**
      * @return Collection<int, Post>
      */
@@ -159,18 +174,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $post->setOwner(null);
             }
         }
-
-        return $this;
-    }
-
-    public function getBannedUntil(): ?\DateTimeInterface
-    {
-        return $this->bannedUntil;
-    }
-
-    public function setBannedUntil(?\DateTimeInterface $bannedUntil): static
-    {
-        $this->bannedUntil = $bannedUntil;
 
         return $this;
     }

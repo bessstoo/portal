@@ -5,18 +5,18 @@ namespace App\Entity;
 use App\Repository\CommentsRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-
+use Symfony\Bridge\Doctrine\Types\UuidType;
+use Symfony\Component\Uid\Uuid;
 #[ORM\Entity(repositoryClass: CommentsRepository::class)]
 class Comments
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
+    #[ORM\Column(type: UuidType::NAME, unique: true)]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\CustomIdGenerator(class: 'doctrine.uuid_generator')]
+    private $id;
 
-    #[ORM\ManyToOne]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?User $owner = null;
+
 
     #[ORM\Column(type: Types::TEXT)]
     private ?string $content = null;
@@ -29,26 +29,19 @@ class Comments
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
+    private ?User $owner = null;
+
+    #[ORM\ManyToOne(inversedBy: 'comments')]
+    #[ORM\JoinColumn(nullable: false)]
     private ?Post $post = null;
 
 
 
-    public function getId(): ?int
+    public function getId(): ?Uuid
     {
         return $this->id;
     }
 
-    public function getOwner(): ?User
-    {
-        return $this->owner;
-    }
-
-    public function setOwner(?User $owner): static
-    {
-        $this->owner = $owner;
-
-        return $this;
-    }
 
     public function getContent(): ?string
     {
@@ -86,12 +79,26 @@ class Comments
         return $this;
     }
 
-    public function getPost(): ?Post
+
+
+    public function getOwner(): ?User
+    {
+        return $this->owner;
+    }
+
+    public function setOwner(?User $owner): static
+    {
+        $this->owner = $owner;
+
+        return $this;
+    }
+
+    public function getPost(): ?post
     {
         return $this->post;
     }
 
-    public function setPost(?Post $post): static
+    public function setPost(?post $post): static
     {
         $this->post = $post;
 
