@@ -23,26 +23,5 @@
     </div>
 {% endblock %}
 
-{#{% extends 'base.html.twig' %}#}
 
-{#{% block title %}Посты{% endblock %}#}
-
-{#{% block body %}#}
-{#    <h1>Все посты</h1>#}
-{#    <div class="grid">#}
-{#    {% if posts != null %}#}
-{#        {% for post in posts %}#}
-{#            {% if post.isDeletedAt == null %}#}
-{#                <div class="grid_item">#}
-{#                <h3><a href="{{ path('show_one_post', {'post_id': post.id }) }}" class="text_black_post"> {{ post.heading }}</a></h3>#}
-{#                <p>{{ post.content|slice(0, 200) ~ '...' }}</p>#}
-{#                    {% if is_granted('ROLE_ADMIN') %}#}
-{#                        <a href="{{ path('delete_post', {'post_id': post.id}) }}" class="delete-button">Удалить</a>#}
-{#                    {% endif%}#}
-{#                </div>#}
-{#            {% endif %}#}
-{#        {% endfor%}#}
-{#    {% endif %}#}
-{#    </div>#}
-{#{% endblock %}#}
 

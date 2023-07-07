@@ -14,9 +14,7 @@ class PostEditType extends AbstractType
         $builder
             ->add('heading')
             ->add('content')
-//            ->add('creation_date')
-//            ->add('deleted_at')
-//            ->add('owner')
+
         ;
     }
 

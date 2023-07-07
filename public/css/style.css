@@ -364,7 +364,6 @@ a.registration {
     box-shadow: 8px 7px 20px 0 rgb(96 92 92 / 50%);
 
 }
-
 .comment h4 {
     font-size: 18px;
     font-weight: bold;
@@ -378,3 +377,30 @@ a.registration {
     margin-left: 5px;
     word-wrap: break-word;
 }
+
+.reply_comment {
+    min-height: 63px;
+    margin-left: 20px;
+    background: #e1e1e1;
+    /*border-color: #555555;*/
+    /*border-width: 1px;*/
+    /*border-radius: 10px;*/
+    /*border-style: solid;*/
+    max-width: 900px;
+    box-shadow: 8px 7px 20px 0 rgb(96 92 92 / 50%);
+
+}
+.reply_comment h4 {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 5px;
+    margin-left: 5px;
+}
+
+.relpy_comment p {
+    font-size: 14px;
+    margin-bottom: 10px;
+    margin-left: 5px;
+    word-wrap: break-word;
+}
+

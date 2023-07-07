@@ -13,9 +13,7 @@ class CommentCreateFormType extends AbstractType
     {
         $builder
             ->add('content')
-//            ->add('creation_date')
-//            ->add('deleted_at')
-//            ->add('owner')
+
         ;
     }
 

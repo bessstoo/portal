@@ -65,10 +65,22 @@ class PostController extends AbstractController
         }
 
         $comments = $doctrine->getRepository(Comments::class)->findBy(['post'=>$post_id]);
+
+        $allComments = [];
+        $replies = [];
+
+        foreach ($comments as $comment) {
+            if ($comment->getReplyId() !== null) {
+                $replies[] = $comment; // Добавление комментария с заполненным полем "reply_id" в массив "replies"
+            } else {
+                $allComments[] = $comment; // Добавление всех остальных комментариев в массив "allComments"
+            }
+        }
         $post = $doctrine->getRepository(Post::class)->findBy(['id' => $post_id]);
         return $this->render('post/show_one_post.html.twig', [
             'post' => $post[0],
-            'comments' => $comments,
+            'comments' => $allComments,
+            'replies' => $replies,
             'comment_form' => $form->createView(),
             'date_time' => $currentDateTime
         ]);

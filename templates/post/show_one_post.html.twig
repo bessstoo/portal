@@ -14,22 +14,41 @@
     <h1>Пост удален :(</h1>
     {% endif %}
     <h2>Комментарии</h2>
-    {% set currentDateTime = "now"|date %}
     {% for comment in comments %}
-        {% set commentDateTime = comment.getCreationDate|date %}
-        {% set different = (date_time|date_modify('+3 hours')).diff(comment.getCreationDate) %}
-        {% if comment.isDeletedAt == null %}
-            <div class="comment">
-                <h4>{{ comment.owner.username }}</h4>
-                <p>{{ comment.content }}</p>
-                {% if (comment.owner == app.user and different.d < 1 and not is_granted('ROLE_BANNED')) or is_granted('ROLE_ADMIN') %}
-                    <a href="{{ path('delete_comment', {'comment_id': comment.id}) }}">Удалить</a>
-                        {%  if (comment.owner == app.user and different.i < 5 and not is_granted('ROLE_BANNED')) %}
-                            <a href="{{ path('edit_comment', {'comment_id': comment.id}) }}">Редактировать</a>
+        {% set different_comment = (date_time|date_modify('+3 hours')).diff(comment.getCreationDate) %}
+            {% if comment.isDeletedAt == null %}
+                <div class="comment">
+                    <h4>{{ comment.owner.username }}</h4>
+                    <p>{{ comment.content }}</p>
+                    {% if (comment.owner == app.user and different_comment.d < 1 and not is_granted('ROLE_BANNED')) or is_granted('ROLE_ADMIN') %}
+                        <a href="{{ path('delete_comment', {'comment_id': comment.id}) }}">Удалить</a>
+                            {%  if (comment.owner == app.user and different_comment.i < 5 and not is_granted('ROLE_BANNED')) %}
+                                <a href="{{ path('edit_comment', {'comment_id': comment.id}) }}">Редактировать</a>
+                            {% endif %}
+                    {% endif %}
+                    {% if not is_granted('ROLE_BANNED') %}
+                        <a href="{{ path('reply_comment', {'comment_id': comment.id}) }}">Ответить</a>
+                    {% endif %}
+                    {% for reply in replies %}
+                        {% set different_reply = (date_time|date_modify('+3 hours')).diff(reply.getCreationDate) %}
+                        {% if reply.getReplyId == comment.getId and reply.isDeletedAt == null %}
+                            <div class="reply_comment">
+                                <h4>{{ reply.owner.username }}</h4>
+                                <p>{{ reply.content }}</p>
+                                {% if (reply.owner == app.user and different_reply.d < 1 and not is_granted('ROLE_BANNED')) or is_granted('ROLE_ADMIN') %}
+                                    <a href="{{ path('delete_comment', {'comment_id': reply.id}) }}">Удалить</a>
+                                    {%  if (reply.owner == app.user and different_reply.i < 5 and not is_granted('ROLE_BANNED')) %}
+                                        <a href="{{ path('edit_comment', {'comment_id': reply.id}) }}">Редактировать</a>
+                                    {% endif %}
+                                    {% if not is_granted('ROLE_BANNED') %}
+                                        <a href="{{ path('reply_comment', {'comment_id': comment.id}) }}">Ответить</a>
+                                    {% endif %}
+                                {% endif %}
+                            </div>
                         {% endif %}
-                {% endif %}
-            </div>
-        {% endif %}
+                    {% endfor %}
+                </div>
+            {% endif %}
     {% endfor %}
     {% if is_granted('IS_AUTHENTICATED_FULLY') and not is_granted('ROLE_BANNED') %}
     {{ form_start(comment_form) }}

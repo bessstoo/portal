@@ -35,6 +35,9 @@ class Comments
     #[ORM\JoinColumn(nullable: false)]
     private ?Post $post = null;
 
+    #[ORM\Column(type: 'uuid', nullable: true)]
+    private ?Uuid $reply_id = null;
+
 
 
     public function getId(): ?Uuid
@@ -101,6 +104,18 @@ class Comments
     public function setPost(?post $post): static
     {
         $this->post = $post;
+
+        return $this;
+    }
+
+    public function getReplyId(): ?Uuid
+    {
+        return $this->reply_id;
+    }
+
+    public function setReplyId(?Uuid $reply_id): static
+    {
+        $this->reply_id = $reply_id;
 
         return $this;
     }
